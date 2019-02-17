@@ -1,0 +1,59 @@
+<div class="container d-flex flex-column align-items-center">
+  <h2>Ironhack Classes</h2>
+  <div class="container d-flex flex-column align-items-center">
+    <a href="/classes/create">
+    <button class="btn btn-lg btn-primary"><i class="fas fa-folder-plus"></i>  Create</button>
+    </a>
+  </div>
+  <br>
+  <div class="container">
+    {{#if success }}
+    <div class="alert alert-success alert-dismissible success-message" role="alert">{{success}}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    {{/if}}
+    {{#if error }}
+    <div class="alert alert-warning alert-dismissible error-message" role="alert">{{error}}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    {{/if}}
+  </div>
+
+  <div class="container d-flex flex-row flex-wrap justify-content-center">
+    {{#each classes}}
+  
+      <div class="card card--margin card--bigger-font" style="width: 18rem;">
+        <div class="card-header">
+          <h5 class="card-title"><strong>{{name}}</strong></h5>
+          <p class="card-text">{{city}}</p>
+        </div>
+        <div class="card-body">
+          <ul class="list-group">
+            <li class="list-group-item"><strong>Teacher: </strong>{{_teacher.firstName}} {{_teacher.lastName}}</li>
+            <li class="list-group-item"><strong>TA: </strong> 
+              {{#each _TA}}
+              {{firstName}} {{lastName}} -
+              {{/each}}
+            </li>
+          </ul>
+        </div>
+        
+        <div class="card-footer d-flex justify-content-center flex-wrap">
+          <a href="/classes/edit/{{_id}}" class="card-link">
+            <button class="btn btn-warning"><i class="far fa-edit"></i>  Edit</button>
+          </a>
+          <a href="/classes/delete/{{_id}}" class="card-link">
+            <button class="btn btn-danger"><i class="far fa-trash-alt"></i>  Delete</button>
+          </a>
+        </div>
+      </div>  
+    {{/each}}
+ 
+  </div>
+</div>
+
+

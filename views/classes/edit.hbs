@@ -1,0 +1,173 @@
+<div class="container d-flex flex-column">
+
+  {{!-- Edit Class --}}
+  <div id="jumbo" class="jumbotron container d-flex flex-column align-items-center">
+    <h1>Edit Class</h1>
+    <form action="/classes/edit/{{oneClass._id}}" method="POST">
+      <div class="form-group row justify-content-center">
+        <input type="text" name="name" class="form-control my-2" id="classname" value="{{oneClass.name}}">
+        <input type="password" name="password" class="form-control" id="password"
+          placeholder="Leave blank if you want to keep the current password.">
+        <select name="city" class="form-control form-control-lg my-2" value="Munich">
+          <option selected hidden>{{oneClass.city}}</option>
+          <option value="Barcelona">Barcelona</option>
+          <option value="Amsterdam">Amsterdam</option>
+          <option value="Berlin">Berlin</option>
+          <option value="Bogotá">Bogotá</option>
+          <option value="Lisbon">Lisbon</option>
+          <option value="Madrid">Madrid</option>
+          <option value="Mexico City">Mexico City</option>
+          <option value="Miami">Miami</option>
+          <option value="Munich">Munich</option>
+          <option value="Paris">Paris</option>
+          <option value="São Paulo">São Paulo</option>
+        </select>
+        <button type="submit" class="btn btn-lg btn-primary mt-2">Change</button>
+      </div>
+    </form>
+  </div>
+      {{#if success }}
+      <div class="alert alert-success alert-dismissible success-message" role="alert">{{success}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      {{/if}}
+      {{#if error }}
+      <div class="alert alert-warning alert-dismissible error-message" role="alert">{{error}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      {{/if}}
+  {{!-- Add Member --}}
+  <div class="container d-flex flex-column align-items-center">
+    <h3>Add a member to this class</h3>
+    <form action="/users/createUser/{{oneClass._id}}" method="POST" enctype="multipart/form-data">
+
+      <div class="row">
+        <div class="col-sm-6 col-m-5 col-lg-3">
+          <input name="firstName" type="text" class="form-control" placeholder="First name">
+        </div>
+        <div class="col-sm-6 col-m-5 col-lg-3">
+          <input name="lastName" type="text" class="form-control" placeholder="Last name">
+        </div>
+        <div class="col">
+          <input id="datefield" name="birthday" type="date" class="form-control" min="1930-01-01" max="2000-01-01"
+            placeholder="Birthday">
+        </div>
+        <div class="col">
+          <select name="role" class="form-control" value="Student">
+            <option value="Student">Student</option>
+            <option value="TA">TA</option>
+            <option value="Teacher">Teacher</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row --mt">
+        <div class="col-8">
+          <div class=" custom-file" id="customFile" lang="de">
+            <input type="file" name="photo" class="custom-file-input" id="exampleInputFile" aria-describedby="fileHelp">
+            <label class="custom-file-label" for="exampleInputFile">
+              Select file...
+            </label>
+          </div>
+        </div>
+        <div class="col-4">
+          <button id="btn_addStudent" type="submit" class="btn btn-primary" value="SAVE"><i
+              class="fas fa-user-plus"></i> Add Member</button>
+        </div>
+      </div>
+      
+    </form>
+  </div>
+  
+  <div id="studentslist" class="container jumbotron mt-5">
+
+      <h1 class="text-center"><strong>Members of {{oneClass.name}}</strong></h1>
+      <br>
+      <h4 class="text-center"><em><strong>Students</strong></em></h4>
+      <hr class="style18">
+      <table class="table">
+      {{#each students}}
+        <div class="row justify-content-center align-items-center">
+          <div class="col-3 col-md-2 col-lg-2">
+            <span><strong>{{firstName}}</strong></span>
+          </div>
+          <div class="col-3 col-md-2 col-lg-2">
+            <span>{{lastName}}</span>
+          </div>
+          <div class="col-6 col-md-3 col-lg-2">
+            <span>[{{username}}]</span>
+          </div>
+          <div class="col-2 col-md-2 col-lg-1">
+            <a href="/users/user/edit/{{_id}}"><button class="btn btn-warning"><i class="far fa-edit"></i>
+                Edit</button></a>
+          </div>
+          <div class="col-10 col-md-1 col-lg-1">
+            <a href="/users/delete/user/{{_id}}"><button class="btn btn-danger"><i class="far fa-trash-alt"></i>
+                Delete</button></a>
+          </div>
+        </div>
+      <hr>
+      {{/each }}
+      </table> 
+
+      <h4 class="text-center"><em><strong>TAs</strong></em></h4>
+      <hr class="style18">
+      <table class="table">
+      {{#each tas}}
+        <div class="row justify-content-center align-items-center">
+          <div class="col-3 col-md-2 col-lg-2">
+            <span><strong>{{firstName}}</strong></span>
+          </div>
+          <div class="col-3 col-md-2 col-lg-2">
+            <span>{{lastName}}</span>
+          </div>
+          <div class="col-6 col-md-3 col-lg-2">
+            <span>[{{username}}]</span>
+          </div>
+          <div class="col-2 col-md-2 col-lg-1">
+            <a href="/users/user/edit/{{_id}}"><button class="btn btn-warning"><i class="far fa-edit"></i>
+                Edit</button></a>
+          </div>
+          <div class="col-10 col-md-1 col-lg-1">
+            <a href="/users/delete/user/{{_id}}"><button class="btn btn-danger"><i class="far fa-trash-alt"></i>
+                Delete</button></a>
+          </div>
+        </div>
+      <hr>
+      {{/each }}
+      </table>  
+
+      <h4 class="text-center"><em><strong>Teacher</strong></em></h4>
+      <hr class="style18">
+      <table class="table">
+      {{#each teacher}}
+        <div class="row justify-content-center align-items-center">
+          <div class="col-3 col-md-2 col-lg-2">
+            <span><strong>{{firstName}}</strong></span>
+          </div>
+          <div class="col-3 col-md-2 col-lg-2">
+            <span>{{lastName}}</span>
+          </div>
+          <div class="col-6 col-md-3 col-lg-2">
+            <span>[{{username}}]</span>
+          </div>
+          <div class="col-2 col-md-2 col-lg-1">
+            <a href="/users/user/edit/{{_id}}"><button class="btn btn-warning"><i class="far fa-edit"></i>
+                Edit</button></a>
+          </div>
+          <div class="col-10 col-md-1 col-lg-1">
+            <a href="/users/delete/user/{{_id}}"><button class="btn btn-danger"><i class="far fa-trash-alt"></i>
+                Delete</button></a>
+          </div>
+        </div>
+      <hr>
+      {{/each }}
+      </table>  
+  </div>
+</div>
+
+<script src="/javascripts/setDate.js"></script>

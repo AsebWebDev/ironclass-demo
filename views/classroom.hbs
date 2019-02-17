@@ -1,0 +1,183 @@
+<div class="container">
+  <div class="row">
+    {{!-- s i d e b a r --}}
+    <div class="col-12 col-md-3">
+
+      {{!-- c a l l q u e u e --}}
+      <div id="call-queue" class="classroom d-flex flex-column justify-content-between">
+        <div>
+          <h3>CallQueue</h3>
+          <div class="collapse collapseElement show">
+            <div class="classroom--min-vh d-flex flex-column justify-content-between">
+
+              <div class="form-group">
+
+                <ul id="call-list" class="list-group scrollbar">
+                  {{#each queueObj}}
+
+                  {{#isCurrentUser _id}}
+
+                  <div id="{{id}}"
+                    class="alert alert-warning alert-dismissible fade show alert--little-margin alert--little-padding font-weight-bold{{#if @first}} next-student{{/if}}"
+                    role="alert">
+                    {{firstName}}
+                    <a href="/classroom/queue-tick/{{id}}" class="close"><span>&times;</span></a>
+                  </div>
+
+                  {{else}}
+
+
+                  <div id="{{id}}"
+                    class="alert alert-warning alert-dismissible fade show alert--little-margin alert--little-padding{{#if @first}} next-student{{/if}}"
+                    role="alert">
+                    {{firstName}}
+                    <a href="/classroom/queue-tick/{{id}}" class="close"><span>&times;</span></a>
+                  </div>
+
+                  {{/isCurrentUser}}
+                  {{/each}}
+                </ul>
+
+              </div> {{!-- form-group --}}
+
+              <div class="d-flex flex-wrap justify-content-between">
+                {{#isStudent}}
+                <a href="/classroom/queue-wave" class="btn btn-primary btn-block">Wave</a>
+                {{else}}
+                <a href="/classroom/queue-tick/n-a" class="btn btn-primary btn-block">Tick</a>
+                {{/isStudent}}
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      {{!-- c r e a t e  g r o u p s --}}
+      {{#isTA}}
+      <div id="create-groups" class="classroom">
+        <h3>Create groups</h3>
+        {{!-- input form to set parameters for createGroups --}}
+        <form action="/classroom/create-groups" method="POST">
+          <div class="row">
+            <div class="col-12 col-lg">
+              <div class="form-group">
+                <label for="groupSize">Group size</label>
+                <input type="number" class="form-control" name="groupSize" min="1" value="2"
+                  placeholder="Number of people">
+              </div>
+            </div>
+
+            <div class="col-12 col-lg-7">
+              <div class="form-group">
+                <label for="option">Option</label>
+                <select class="custom-select" name="option">
+                  <option value="noRepeat" selected>Not again!</option>
+                  <option value="repeat">Mix randomly</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="notPresent" class="btn btn-block" data-toggle="collapse" href=".collapseElement" role="button"
+              aria-expanded="false" aria-controls="collapseElement">Click, to select missing students</label>
+            <div class="collapse collapseElement">
+              <div class="card card--padding">
+                {{#groupedEach 2 students}}
+                <div class="row">
+                  {{#each this}}
+                  <div class="col">
+                    <div class="custom-control custom-checkbox">
+                      <input class="custom-control-input" type="checkbox" value="{{_id}}" name="notPresent"
+                        id="{{_id}}">
+                      <label class="custom-control-label" for="{{_id}}">
+                        {{firstName}}
+                      </label>
+                    </div>
+                  </div>
+                  {{/each}}
+                </div>
+                {{/groupedEach}}
+              </div>
+            </div>
+          </div>
+          <div class="d-flex flex-wrap justify-content-between">
+            <button type="submit" class="btn btn-primary btn-block">Create groups</button>
+            <a href="/classroom/reset-worked-with" class="btn btn-secondary btn-block">Reset partners</a>
+          </div>
+        </form>
+      </div>
+      {{/isTA}}
+    </div>
+
+    {{!-- m a i n  a r e a --}}
+    <div class="col-12 col-md">
+
+      {{!-- c u r r e n t  c o u r s e --}}
+      <div class="classroom">
+        <div class="row">
+          <div class="col-md-10">
+            <div id="currentCourse">
+              <div data-toggle="collapse" href=".collapseInput" role="button" aria-expanded="false"
+                aria-controls="collapseInput">
+                <h2 class="h2--styled d-inline">{{currentCourse}}</h2>
+              </div>
+              {{#isTA}}
+              <form action="/classroom" method="POST" class="collapse collapseInput">
+                <div class="input-group input-group--mt">
+                  <input class="form-control" name="currentCourse"
+                    placeholder="Please, enter title of current course/LAB here..."></input>
+                  <div class="input-group-append">
+                    <button class="btn btn-secondary" type="submit">Update</button>
+                  </div>
+                </div>
+              </form>
+              {{/isTA}}
+            </div>
+          </div>
+          <div class="col-md d-flex flex-column justify-content-center">
+            <div class="btn-collapse-groups" role="button" data-toggle="collapse" data-target="#collapseGroups"
+              aria-expanded="false" aria-controls="collapseGroups">
+              Show/hide groups
+            </div>
+
+          </div>
+
+          {{!-- c u r r e n t  g r o u p s --}}
+          <div class="collapse show" id="collapseGroups">
+            <div class="groups">
+
+              <div class="d-flex flex-wrap justify-content-around">
+
+                {{#each currentGroups as |item|}}
+                <div class="card card--mb card-groups d-flex flex-column justify-content-center">
+
+                  <div class="">
+                    {{#each item}}
+                    <div class="d-flex align-items-center">
+                      <div class="img">
+                        <img class="rounded" src="{{imgUrl}}" alt="{{username}}">
+                      </div>
+                      <div class="">
+                        {{#isCurrentUser _id}}
+                        <div class="font-weight-bold text-primary">{{firstName}}</div>
+                        {{else}}
+                        <div class="">{{firstName}}</div>
+                        {{/isCurrentUser}}
+                      </div>
+                    </div>
+                    {{/each}}
+                  </div>
+                </div>
+                {{/each}}
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

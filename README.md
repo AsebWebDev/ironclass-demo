@@ -18,7 +18,7 @@ Please use these credentials to see a demo:
 Or you can clone the project like this in your terminal:
 
 ```
-git clone https://github.com/ironclass/ironclass.git 
+git clone https://github.com/AsebWebDev/ironclass-demo.git
 cd ironclass
 npm start
 ```

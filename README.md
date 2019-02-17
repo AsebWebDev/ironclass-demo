@@ -5,9 +5,11 @@
 
 Because the non-demo version is used with a real life database by Ironhack, this copy is a demoversion for prospects, recruiters and other interested parties. 
 
-For more information, please visit the original repository;
+**For more information, please visit the original repository:
 
-You can try IronClass with a demo database here: https://ironclass.herokuapp.com/welcome/
+https://github.com/ironclass/ironclass
+
+You can try IronClass with a demo database here: ...coming soon...
 
 Please use these credentials to see a demo:
   

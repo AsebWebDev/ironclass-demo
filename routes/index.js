@@ -11,7 +11,8 @@ const {
   updateCourse,
   queueStudent,
   dequeueStudent,
-  sudoDequeueStudent
+  sudoDequeueStudent,
+  wave
 } = require("../src/socketAPI");
 
 const router = express.Router();
@@ -41,7 +42,6 @@ router.get("/classroom", isConnected, (req, res, next) => {
       students.sort(dynamicSort("firstName"));
       const { _callQueue, currentGroups, currentCourse } = theClass;
       let queueObj = _callQueue.reverse();
-
       res.render("classroom", { user, queueObj, students, currentCourse, currentGroups });
     })
     .catch(next);
@@ -124,7 +124,10 @@ router.get("/classroom/queue-wave", isConnected, (req, res, next) => {
             let id = req.user._id;
             // UPDATE VIA DOM
             queueStudent(firstName, id);
+            // SEND NOTIFICATION
+            wave(firstName)
           }
+          
           res.redirect("/classroom");
         })
         .catch(next);
